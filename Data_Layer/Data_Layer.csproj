@@ -43,7 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="connection.cs" />
+    <Compile Include="Insert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model_Layer\Model_Layer.csproj">
+      <Project>{87C29CF5-86B3-428F-9551-F989BDA88D50}</Project>
+      <Name>Model_Layer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

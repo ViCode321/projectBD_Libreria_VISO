@@ -2,7 +2,7 @@
     --first-color: #4723d9;
     --second-color: #1e0876;
     --first-color-light: #afa5d9;
-    --first-color-with: #ffffff
+    --first-color-white: #ffffff
 }
 
 .icon {
@@ -12,9 +12,19 @@
 
 .btn-primary {
     background-color: var(--first-color);
-    color: var(--first-color-with)
+    color: var(--first-color-white)
 }
 
     .btn-primary:hover {
         background-color: var(--second-color);
     }
+
+/* Estilo predeterminado del select */
+.select {
+    color: #808080;
+}
+    /* Estilo cuando el select está enfocado (activo) */
+    .select:focus {
+        color: #000000;
+    }
+

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace Presentation_Layer
@@ -22,19 +18,13 @@ namespace Presentation_Layer
             routes.MapRoute(
                 name: "Search",
                 url: "Search",
-                defaults: new { controller = "Home", action = "Search"}
+                defaults: new { controller = "Home", action = "Search" }
             );
 
             routes.MapRoute(
                 name: "Sale",
                 url: "Sale",
                 defaults: new { controller = "Home", action = "Sale" }
-            );
-
-            routes.MapRoute(
-                name: "Inventory",
-                url: "Inventory",
-                defaults: new { controller = "Home", action = "Inventory" }
             );
 
             routes.MapRoute(

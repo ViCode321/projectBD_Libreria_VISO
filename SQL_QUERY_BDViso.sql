@@ -342,3 +342,9 @@ Select Sum(Monto_final)
 From Factura
 Where (Fecha Between '2023-03-02' and '2023-05-01')
 */
+
+SELECT * FROM Proveedor;
+
+SELECT * FROM Marca;
+
+SELECT * FROM Producto WHERE Producto_Id >= 60;
