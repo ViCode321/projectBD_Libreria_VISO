@@ -1,0 +1,20 @@
+﻿:root {
+    --first-color: #4723d9;
+    --second-color: #1e0876;
+    --first-color-light: #afa5d9;
+    --first-color-with: #ffffff
+}
+
+.icon {
+    font-size: 150px;
+    color: var(--first-color);
+}
+
+.btn-primary {
+    background-color: var(--first-color);
+    color: var(--first-color-with)
+}
+
+    .btn-primary:hover {
+        background-color: var(--second-color);
+    }

@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Búsqueda";
+}
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">Buscar Producto</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-2">
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="productName" class="w-25">Buscar producto por:</label>
+                <input type="text" id="productName" name="productName" class="form-control w-75" placeholder="Nombre, Código o Categoría del producto">
+                <div id="name" class="form-check m-2">
+                    <input class="form-check-input" type="radio" name="name" id="name" value="name">
+                    <label class="form-check-label" for="name">Nombre</label>
+                </div>
+                <div id="code" class="form-check m-2">
+                    <input class="form-check-input" type="radio" name="name" id="code" value="code">
+                    <label class="form-check-label" for="code">Código</label>
+                </div>
+                <div id="category" class="form-check m-2">
+                    <input class="form-check-input" type="radio" name="name" id="categoty" value="categoty">
+                    <label class="form-check-label" for="categoty">Categoria</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-75 mt-4">
+                <i class="bx bx-search-alt"></i> Buscar
+            </button>            
+        </div>
+    </div>
+
+    <div class="row">
+
+    </div>
+
+    <div class="row">
+        <div class="col-12 mt-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Marca</th>
+                        <th>Proveedor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se insertarán las filas de la tabla -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

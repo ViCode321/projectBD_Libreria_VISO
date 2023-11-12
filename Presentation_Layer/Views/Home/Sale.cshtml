@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Sale";
+}
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">Venta al contado</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 mt-2">
+            <!-- 4 inputs a la izquierda -->
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="input1" class="w-25">ID:</label>
+                <input type="number" id="id" name="id" class="form-control w-75" placeholder=0>
+            </div>
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="input2" class="w-25">Descripción del Producto:</label>
+                <input type="text" id="name" name="name" class="form-control w-75" placeholder="Descripción">
+            </div>
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="input3" class="w-25">Marca:</label>
+                <input type="text" id="marca" name="marca" class="form-control w-75" placeholder="Marca">
+            </div>
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="input3" class="w-25">Categoria:</label>
+                <input type="text" id="categoria" name="categoria" class="form-control w-75" placeholder="Categoria">
+            </div>
+        </div>
+        <!--3 Inputs a la derecha-->
+        <div class="col-6 mt-2">
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="input1" class="w-25">Precio por unidad:</label>
+                <input type="number" id="price" name="price" class="form-control w-75" placeholder=0>
+            </div>
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="input2" class="w-25">Cantidad:</label>
+                <input type="text" id="amount" name="amount" class="form-control w-75" placeholder=0>
+            </div>
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="input3" class="w-25">Total Producto:</label>
+                <input type="text" id="total" name="total" class="form-control w-75" placeholder=0>
+            </div>
+        </div>
+    </div>
+
+    <!--Botón de búsqueda-->
+    <div class="row justify-content-center">
+        <div class="col-6 mt-2">
+            <button type="submit" class="btn btn-primary w-100 m-4">
+                <i class="bx bx-plus"></i> Agregar
+            </button>
+        </div>
+    </div>
+    <!--Tabla-->
+    <div class="row">
+        <div class="col-12 mt-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descripción</th>
+                        <th>Categoría</th>
+                        <th>Marca</th>
+                        <th>Proveedor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se insertarán las filas de la tabla -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
