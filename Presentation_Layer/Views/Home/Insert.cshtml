@@ -13,12 +13,12 @@
     <form method="post" action="@Url.Action("Insert")">
         <div class="row">
             <div class="col-6 mt-2">
-                <!-- 5 inputs a la izquierda -->
-                <div class="form-group d-flex align-items-center mt-2">
+                <!-- 4 inputs a la izquierda -->
+                <!--<div class="form-group d-flex align-items-center mt-2">
                     <label for="input1" class="w-25">ID:</label>
                     <input type="number" id="id" name="id" class="form-control w-75" placeholder=0>
                     @Html.ValidationMessage("Id", "", new { @class = "text-danger" })
-                </div>
+                </div>-->
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="input2" class="w-25">Proveedor:</label>
                     <select id="proveedor" name="proveedor" class="form-control select w-75">
@@ -29,7 +29,7 @@
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="input3" class="w-25">Descripción del Producto:</label>
                     <input type="text" id="name" name="name" class="form-control w-75" placeholder="Descripción">
-                    @Html.ValidationMessage("Descripcion", new { @class = "text-danger" })
+                    @Html.ValidationMessage("name", new { @class = "text-danger" })
                 </div>
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="input4" class="w-25">Marca:</label>
@@ -51,7 +51,7 @@
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="amount" class="w-25">Cantidad:</label>
                     <input type="text" id="amount" name="amount" class="form-control w-75" placeholder="0">
-                    @Html.ValidationMessage("Cantidad", "", new { @class = "text-danger" })
+                    @Html.ValidationMessage("amount", new { @class = "text-danger" })
                 </div>
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="input2" class="w-25">Costo:</label>

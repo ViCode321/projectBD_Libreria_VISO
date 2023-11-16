@@ -1,4 +1,5 @@
 ﻿using Data_Layer;
+using Microsoft.Ajax.Utilities;
 using Model_Layer;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,43 @@ namespace Presentation_Layer.Controllers
 
         public ActionResult Search()
         {
-            return View();
+            // Al cargar la página, obtén todos los productos
+            Search search = new Search();
+            List<Product> productos = search.ObtenerTodosLosProductos();
+
+            // Pasa la lista de productos a la vista
+            return View("Search", productos);
         }
 
-        public ActionResult Sale()
+        [HttpPost]
+        public ActionResult Search(string searchTerm, string searchBy)
         {
-            return View();
+            // Verificar si searchBy no tiene un valor válido
+            if (string.IsNullOrEmpty(searchBy))
+            {
+                ViewBag.NoResultsMessage = "Por favor, selecciona un método de búsqueda.";
+                return View();  // Regresar a la vista de búsqueda
+            }
+
+            Search search = new Search();
+            List<Product> productos = search.BuscarProducto(searchTerm, searchBy);
+
+            // Comprobar si hay resultados
+            if (productos.Count == 0)
+            {
+                ViewBag.NoResultsMessage = "No se encontraron resultados.";
+            }
+
+            return View("Search", productos); // Devuelve la vista de búsqueda con los resultados
+        }
+
+
+        public ActionResult GetAllProducts()
+        {
+            Search search = new Search();
+            List<Product> productos = search.ObtenerTodosLosProductos();
+
+            return View("Search", productos);
         }
 
         public ActionResult Update()

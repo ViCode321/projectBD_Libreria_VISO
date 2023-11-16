@@ -2,6 +2,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Búsqueda";
 }
+<style>
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+
+@model List<Model_Layer.Product>
 
 <div class="container text-center">
     <div class="row">
@@ -9,33 +16,39 @@
             <h1 class="display-4">Buscar Producto</h1>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 mt-2">
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="productName" class="w-25">Buscar producto por:</label>
-                <input type="text" id="productName" name="productName" class="form-control w-75" placeholder="Nombre, Código o Categoría del producto">
-                <div id="name" class="form-check m-2">
-                    <input class="form-check-input" type="radio" name="name" id="name" value="name">
-                    <label class="form-check-label" for="name">Nombre</label>
+    <form method="post" action="@Url.Action("Search")">
+        <div class="row">
+            <div class="col-12 mt-2">
+                <div class="form-group d-flex align-items-center mt-2">
+                    <label for="searchTerm" class="w-25">Buscar producto por:</label>
+                    <input type="text" id="searchTerm" name="searchTerm" class="form-control w-75" placeholder="Descripción, Código, Categoría del producto, Marca">
+                    <div id="name" class="form-check m-2 cursor-pointer">
+                        <input class="form-check-input cursor-pointer" type="radio" name="searchBy" id="name" value="name">
+                        <label class="form-check-label" for="name">Descripción</label>
+                    </div>
+                    <div id="code" class="form-check m-2 cursor-pointer">
+                        <input class="form-check-input cursor-pointer" type="radio" name="searchBy" id="code" value="code">
+                        <label class="form-check-label" for="code">Código</label>
+                    </div>
+                    <div id="category" class="form-check m-2 cursor-pointer">
+                        <input class="form-check-input cursor-pointer" type="radio" name="searchBy" id="category" value="category">
+                        <label class="form-check-label" for="category">Categoría</label>
+                    </div>
+                    <div id="marca" class="form-check m-2 cursor-pointer">
+                        <input class="form-check-input cursor-pointer" type="radio" name="searchBy" id="marca" value="marca">
+                        <label class="form-check-label" for="marca">Marca</label>
+                    </div>
                 </div>
-                <div id="code" class="form-check m-2">
-                    <input class="form-check-input" type="radio" name="name" id="code" value="code">
-                    <label class="form-check-label" for="code">Código</label>
-                </div>
-                <div id="category" class="form-check m-2">
-                    <input class="form-check-input" type="radio" name="name" id="categoty" value="categoty">
-                    <label class="form-check-label" for="categoty">Categoria</label>
-                </div>
+                <button type="submit" class="btn btn-primary w-75 mt-4">
+                    <i class="bx bx-search-alt"></i> Buscar
+                </button>
             </div>
-            <button type="submit" class="btn btn-primary w-75 mt-4">
-                <i class="bx bx-search-alt"></i> Buscar
-            </button>            
         </div>
+    </form>
+    <div id="alertMessages">
+        <!-- Aquí se mostrarán los mensajes de alerta -->
     </div>
 
-    <div class="row">
-
-    </div>
 
     <div class="row">
         <div class="col-12 mt-4">
@@ -43,16 +56,72 @@
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Proveedor</th>
                         <th>Categoría</th>
                         <th>Marca</th>
-                        <th>Proveedor</th>
+                        <th>Cantidad</th>
+                        <th>Costo</th>
+                        <th>Precio</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Aquí se insertarán las filas de la tabla -->
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var producto in Model)
+                        {
+                            <tr>
+                                <td>@producto.Id</td>
+                                <td>@producto.Descripcion</td>
+                                <td>@(producto.ProveedorNombre ?? "N/A")</td>
+                                <td>@(producto.CategoriaNombre ?? "N/A")</td>
+                                <td>@(producto.MarcaNombre ?? "N/A")</td>
+                                <td>@producto.Cantidad</td>
+                                <td>@producto.Costo</td>
+                                <td>@producto.Precio</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8">
+                                @if (!string.IsNullOrEmpty(ViewBag.NoResultsMessage) || ViewData.ModelState["searchBy"] != null)
+                                {
+                                    @ViewBag.NoResultsMessage
+                                }
+                                else
+                                {
+                                    @:No se encontraron resultados.
+                                }
+                            </td>
+                        </tr>
+                    }
                 </tbody>
+
             </table>
         </div>
     </div>
 </div>
+
+<script>
+    function validateSearchForm() {
+        var searchTerm = document.getElementById("searchTerm").value;
+        var searchBy = document.querySelector('input[name="searchBy"]:checked');
+
+        if (!searchTerm || !searchBy) {
+            showAlert("Por favor, ingrese un término de búsqueda y seleccione un criterio.");
+            return false; // Evita que se envíe el formulario si falta información.
+        }
+
+        return true; // Permite que el formulario se envíe si todo está bien.
+    }
+
+    function showAlert(message) {
+        var alertDiv = document.getElementById("alertMessages");
+        alertDiv.innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+            message +
+            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+    }
+
+</script>

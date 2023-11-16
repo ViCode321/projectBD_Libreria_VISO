@@ -10,20 +10,23 @@ namespace Model_Layer
     // En el Model Layer
     public class Product
     {        
-        [Required(ErrorMessage = "El campo ID es obligatorio.")]
+        //Códigos
         public int Id { get; set; }
+        public int ProveedorId { get; set; }
+        public int CategoriaId { get; set; }
+        public int MarcaId { get; set; }
 
         [Required(ErrorMessage = "El campo Proveedor es obligatorio.")]
-        public int ProveedorId { get; set; }
+        public string ProveedorNombre { get; set; }
 
         [Required(ErrorMessage = "El campo Descripción es obligatorio")]
         public string Descripcion { get; set; }
 
         [Required(ErrorMessage = "El campo Categoria es obligatorio")]
-        public int CategoriaId { get; set; }
+        public string CategoriaNombre { get; set; }
 
         [Required(ErrorMessage = "El campo Marca es obligatorio")]
-        public int MarcaId { get; set; }
+        public string MarcaNombre { get; set; }
 
         [Required(ErrorMessage = "El campo Cantidad es obligatorio.")]
         public int Cantidad { get; set; }

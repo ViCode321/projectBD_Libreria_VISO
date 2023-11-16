@@ -20,7 +20,7 @@ namespace Data_Layer
                                "VALUES (@ProveedorId, @Descripcion, @MarcaId, @CategoriaId, @Cantidad, @Costo, @Precio)";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@ProveedorId", product.ProveedorId);
+                    /*command.Parameters.AddWithValue("@ProveedorId", product.ProveedorId);
                     command.Parameters.AddWithValue("@Descripcion", product.Descripcion);
                     command.Parameters.AddWithValue("@MarcaId", product.MarcaId);
                     command.Parameters.AddWithValue("@CategoriaId", product.CategoriaId);
@@ -28,7 +28,7 @@ namespace Data_Layer
                     command.Parameters.AddWithValue("@Costo", product.Costo);
                     command.Parameters.AddWithValue("@Precio", product.Precio);
 
-                    command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();*/
                 }
             }
         }
