@@ -29,7 +29,8 @@ namespace Data_Layer
                                 "FROM Producto INNER JOIN Proveedor ON Producto.Proveedor_Id = Proveedor.Proveedor_Id " +
                                 "INNER JOIN Categoria ON Producto.Categoria_Id = Categoria.Categoria_Id " +
                                 "INNER JOIN Marca ON Producto.Marca_Id = Marca.Marca_Id " +
-                                "WHERE Producto.Descripcion LIKE @searchTerm";
+                                "WHERE Producto.Descripcion LIKE @searchTerm " +
+                                "ORDER BY Producto.Producto_Id";
                     }
                     else if (searchBy == "code")
                     {
@@ -38,7 +39,9 @@ namespace Data_Layer
                                 "FROM Producto INNER JOIN Proveedor ON Producto.Proveedor_Id = Proveedor.Proveedor_Id " +
                                 "INNER JOIN Categoria ON Producto.Categoria_Id = Categoria.Categoria_Id " +
                                 "INNER JOIN Marca ON Producto.Marca_Id = Marca.Marca_Id " +
-                                "WHERE Producto.Producto_Id LIKE @searchTerm";
+                                "WHERE Producto.Producto_Id LIKE @searchTerm " + 
+                                "ORDER BY Producto.Producto_Id";
+                    
                     }
                     else if (searchBy == "category")
                     {
@@ -47,7 +50,18 @@ namespace Data_Layer
                                 "FROM Producto INNER JOIN Proveedor ON Producto.Proveedor_Id = Proveedor.Proveedor_Id " +
                                 "INNER JOIN Categoria ON Producto.Categoria_Id = Categoria.Categoria_Id " +
                                 "INNER JOIN Marca ON Producto.Marca_Id = Marca.Marca_Id " +
-                                "WHERE Categoria.Nombre LIKE @searchTerm";
+                                "WHERE Categoria.Nombre LIKE @searchTerm " +
+                                "ORDER BY Producto.Producto_Id";
+                    }               
+                    else if (searchBy == "marca")
+                    {
+                        query = "SELECT Producto.Producto_Id AS Código, Producto.Descripcion, Proveedor.Nombre AS Proveedor, " +
+                                "Categoria.Nombre AS Categoría, Marca.Nombre AS Marca, Producto.Cantidad, Producto.Costo, Producto.Precio " +
+                                "FROM Producto INNER JOIN Proveedor ON Producto.Proveedor_Id = Proveedor.Proveedor_Id " +
+                                "INNER JOIN Categoria ON Producto.Categoria_Id = Categoria.Categoria_Id " +
+                                "INNER JOIN Marca ON Producto.Marca_Id = Marca.Marca_Id " +
+                                "WHERE Marca.Nombre LIKE @searchTerm " +
+                                "ORDER BY Producto.Producto_Id";                
                     }
                     #endregion
 
@@ -79,7 +93,6 @@ namespace Data_Layer
 
             return productos;
         }
-
 
         public List<Product> ObtenerTodosLosProductos()
         {
@@ -120,6 +133,48 @@ namespace Data_Layer
             }
 
             return productos;
+        }
+
+        public Product ObtenerProductoPorId(int id)
+        {
+            Product producto = null;
+
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Producto.Producto_Id AS Id, Producto.Descripcion, " +
+                               "Proveedor.Nombre AS Proveedor, Categoria.Nombre AS Categoria, " +
+                               "Marca.Nombre AS Marca, Producto.Cantidad, Producto.Costo, Producto.Precio " +
+                               "FROM Producto INNER JOIN Proveedor ON Producto.Proveedor_Id = Proveedor.Proveedor_Id " +
+                               "INNER JOIN Categoria ON Producto.Categoria_Id = Categoria.Categoria_Id " +
+                               "INNER JOIN Marca ON Producto.Marca_Id = Marca.Marca_Id " +
+                               "WHERE Producto.Producto_Id = @id";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@id", id);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    producto = new Product
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        ProveedorNombre = reader["Proveedor"].ToString(),
+                        CategoriaNombre = reader["Categoria"].ToString(),
+                        MarcaNombre = reader["Marca"].ToString(),
+                        Cantidad = Convert.ToInt32(reader["Cantidad"]),
+                        Costo = (decimal)Convert.ToSingle(reader["Costo"]),
+                        Precio = (decimal)Convert.ToSingle(reader["Precio"])
+                    };
+                }
+
+                reader.Close();
+            }
+
+            return producto;
         }
     }
 }

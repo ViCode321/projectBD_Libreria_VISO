@@ -3,16 +3,29 @@
     ViewBag.Title = "Inicio";
 }
 
+<style>
+    /* Estilo inicial de los íconos */
+    .icon1 {
+        transition: all 0.3s ease-in-out;
+        color: #4723d9;
+    }
+
+        /* Estilo de los íconos al pasar el mouse por encima */
+        .icon1:hover {
+            transform: scale(1.2);
+            color: red;
+        }
+</style>
+
 <div class="container text-center">
     <div class="row icon mt-5">
         <div class="col-12">
-            <i class='bx bx-book'></i>
-            <i class='bx bx-cut'></i>
-            <i class='bx bxs-eraser'></i>
-            <i class='bx bx-pencil'></i>
+            <i class='bx bx-search icon1'></i> <!-- Icono de buscar -->
+            <i class='bx bx-refresh icon1'></i> <!-- Icono de actualizar -->
+            <i class='bx bx-dollar icon1'></i> <!-- Icono de ventas -->
+            <i class='bx bx-plus icon1'></i> <!-- Icono de insertar -->
         </div>
     </div>
-
     <div class="row">
         <div class="col-12 mt-4">
             <h1 class="display-4">Librería VISO</h1>
@@ -20,3 +33,4 @@
         </div>
     </div>
 </div>
+<script src="~/Scripts/Scripts/index.js"></script>

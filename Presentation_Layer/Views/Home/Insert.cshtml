@@ -2,7 +2,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Insert";
 }
-@model Model_Layer.Product
+
+@model List<Model_Layer.Product>
 
 <div class="container text-center">
     <div class="row">
@@ -22,6 +23,7 @@
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="input2" class="w-25">Proveedor:</label>
                     <select id="proveedor" name="proveedor" class="form-control select w-75">
+                        <option value="">Seleccione una opción</option>
                         <option value="1">Gonper</option>
                         <option value="2">Hispamer</option>
                     </select>
@@ -34,6 +36,7 @@
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="input4" class="w-25">Marca:</label>
                     <select id="marca" name="marca" class="form-control select w-75">
+                        <option value="">Seleccione una opción</option>
                         <option value="marca1">Marca 1</option>
                         <option value="marca2">Marca 2</option>
                     </select>
@@ -41,6 +44,7 @@
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="input5" class="w-25">Categoria:</label>
                     <select id="categoria" name="categoria" class="form-control select w-75">
+                        <option value="">Seleccione una opción</option>
                         <option value="categoria1">Categoria 1</option>
                         <option value="categoria2">Categoria 2</option>
                     </select>
@@ -65,7 +69,7 @@
                 </div>
                 <div class="form-group d-flex align-items-center mt-2">
                     <label for="input4" class="w-25">Total Producto:</label>
-                    <input type="text" id="total" name="total" class="form-control w-75" placeholder=0>
+                    <input type="text" id="total" name="total" class="form-control w-75" placeholder=0 readonly>
                 </div>
             </div>
         </div>
@@ -79,23 +83,58 @@
             </div>
         </div>
     </form>
-    <!--Tabla-->
+    <!--Tabla se resultados-->
     <div class="row">
         <div class="col-12 mt-4">
-            <table class="table table-striped">
-                <thead>
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
                     <tr>
                         <th>Código</th>
-                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Proveedor</th>
                         <th>Categoría</th>
                         <th>Marca</th>
-                        <th>Proveedor</th>
+                        <th>Cantidad</th>
+                        <th>Costo</th>
+                        <th>Precio</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Aquí se insertarán las filas de la tabla -->
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var producto in Model)
+                        {
+                            <tr>
+                                <td>@producto.Id</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Descripcion">@producto.Descripcion</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Proveedor">@producto.ProveedorNombre</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Categoria">@producto.CategoriaNombre</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Marca">@producto.MarcaNombre</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Cantidad">@producto.Cantidad</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Costo">@producto.Costo</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Precio">@producto.Precio</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9">
+                                @if (!string.IsNullOrEmpty(ViewBag.NoResultsMessage) || ViewData.ModelState["searchBy"] != null)
+                                {
+                                    @ViewBag.NoResultsMessage
+                                }
+                                else
+                                {
+                                    @:No se encontraron resultados.
+                                }
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
     </div>
+
+
 </div>

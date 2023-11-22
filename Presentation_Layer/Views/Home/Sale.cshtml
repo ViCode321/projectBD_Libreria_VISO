@@ -3,6 +3,8 @@
     ViewBag.Title = "Sale";
 }
 
+@model List<Model_Layer.Venta>
+
 <div class="container text-center">
     <div class="row">
         <div class="col-12">
@@ -11,37 +13,50 @@
     </div>
     <div class="row">
         <div class="col-6 mt-2">
-            <!-- 4 inputs a la izquierda -->
+            <!-- 5 inputs a la izquierda -->
             <div class="form-group d-flex align-items-center mt-2">
-                <label for="input1" class="w-25">ID:</label>
-                <input type="number" id="id" name="id" class="form-control w-75" placeholder=0>
+                <label for="inputcliente" class="w-25">Cliente:</label>
+                <input type="text" id="cliente" name="cliente" class="form-control date w-75" placeholder="Nombre y apellido del cliente">
             </div>
             <div class="form-group d-flex align-items-center mt-2">
-                <label for="input2" class="w-25">Descripción del Producto:</label>
-                <input type="text" id="name" name="name" class="form-control w-75" placeholder="Descripción">
+                <label for="inputproducto" class="w-25">Producto:</label>
+                <input type="text" id="producto" name="producto" class="form-control w-75" placeholder="Descripción del producto">
             </div>
             <div class="form-group d-flex align-items-center mt-2">
-                <label for="input3" class="w-25">Marca:</label>
-                <input type="text" id="marca" name="marca" class="form-control w-75" placeholder="Marca">
+                <label for="inputfecha" class="w-25">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control select w-75" placeholder="yyyy-mm-dd">
             </div>
             <div class="form-group d-flex align-items-center mt-2">
-                <label for="input3" class="w-25">Categoria:</label>
-                <input type="text" id="categoria" name="categoria" class="form-control w-75" placeholder="Categoria">
+                <label for="inputproducto" class="w-25">Producto:</label>
+                <input type="text" id="producto" name="producto" class="form-control w-75" placeholder="Descripción del producto">
+            </div>
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="inputcantidad" class="w-25">Cantidad:</label>
+                <input type="number" id="cantidad" name="cantidad" class="form-control w-75" placeholder=0>
             </div>
         </div>
-        <!--3 Inputs a la derecha-->
+
+        <!--4 Inputs a la derecha-->
         <div class="col-6 mt-2">
             <div class="form-group d-flex align-items-center mt-2">
-                <label for="input1" class="w-25">Precio por unidad:</label>
-                <input type="number" id="price" name="price" class="form-control w-75" placeholder=0>
+                <label for="inputmoneda" class="w-25">Tipo de Moneda:</label>
+                <select id="moneda" name="moneda" class="form-control select w-75">
+                    <option value="">Seleccione una opción</option>
+                    <option value="codorba">Córdoba</option>
+                    <option value="dolar">Dólar</option>
+                </select>
             </div>
             <div class="form-group d-flex align-items-center mt-2">
-                <label for="input2" class="w-25">Cantidad:</label>
-                <input type="text" id="amount" name="amount" class="form-control w-75" placeholder=0>
+                <label for="inputprecio" class="w-25">Precio:</label>
+                <input type="number" id="precio" name="precio" class="form-control w-75" placeholder=0>
             </div>
             <div class="form-group d-flex align-items-center mt-2">
-                <label for="input3" class="w-25">Total Producto:</label>
-                <input type="text" id="total" name="total" class="form-control w-75" placeholder=0>
+                <label for="inputtotal" class="w-25">Venta Total:</label>
+                <input type="text" id="total" name="total" class="form-control w-75" placeholder="0" readonly>
+            </div>
+            <div class="form-group d-flex align-items-center mt-2">
+                <label for="inputfinal" class="w-25">Venta Final:</label>
+                <input type="text" id="final" name="final" class="form-control w-75" placeholder="0" readonly>
             </div>
         </div>
     </div>
@@ -54,21 +69,56 @@
             </button>
         </div>
     </div>
-    <!--Tabla-->
+    <!--Tabla se resultados-->
     <div class="row">
         <div class="col-12 mt-4">
-            <table class="table table-striped">
-                <thead>
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
                     <tr>
                         <th>Código</th>
-                        <th>Descripción</th>
-                        <th>Categoría</th>
-                        <th>Marca</th>
-                        <th>Proveedor</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Tipo de Moneda</th>
+                        <th>Precio</th>
+                        <th>Venta total</th>
+                        <th>Venta final</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Aquí se insertarán las filas de la tabla -->
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var venta in Model)
+                        {
+                            <tr>
+                                <td>@venta.Id</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Cliente">@venta.Cliente</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Fecha">@venta.Fecha</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Producto">@venta.Producto</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Cantidad">@venta.Cantidad</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Tipo">@venta.TipoMoneda</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Monto">@venta.Monto</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Total">@venta.Total</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Final">@venta.Final</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9">
+                                @if (!string.IsNullOrEmpty(ViewBag.NoResultsMessage) || ViewData.ModelState["searchBy"] != null)
+                                {
+                                    @ViewBag.NoResultsMessage
+                                }
+                                else
+                                {
+                                    @:No se encontraron resultados.
+                                }
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>

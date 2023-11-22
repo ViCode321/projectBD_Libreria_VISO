@@ -349,7 +349,7 @@ SELECT * FROM Marca;
 
 SELECT * FROM Producto;
 
-SELECT * FROM Producto WHERE Descripcion = 'Cuaderno';
+SELECT * FROM Producto WHERE Descripcion = 'Lapicero verde';
 
 SELECT Producto.Producto_Id AS Código, Producto.Descripcion, Proveedor.Nombre AS Proveedor, Categoria.Nombre AS Categoría, Marca.Nombre AS Marca, Producto.Cantidad, Producto.Costo, Producto.Precio
 FROM Producto INNER JOIN Proveedor
@@ -358,3 +358,21 @@ ON Producto.Categoria_Id = Categoria.Categoria_Id INNER JOIN Marca
 ON Producto.Marca_Id = Marca.Marca_Id
 WHERE LOWER(Marca.Nombre) LIKE '%memo%'
 ORDER BY Marca.Nombre ASC
+
+SELECT Factura.Numero_Factura AS Id, Cliente.Nombre + ' ' + Cliente.Apellido AS 'Cliente', Factura.Fecha, Producto.Descripcion, Detalle_Factura.Cantidad, Tipo_Moneda.Tipo, Detalle_Factura.Precio AS Monto, Detalle_Factura.Total_ventas AS Total, Factura.Monto_final AS Final
+FROM Factura INNER JOIN Cliente
+ON Factura.Cliente_Id = Cliente.Cliente_Id INNER JOIN Tipo_Moneda
+ON Factura.Moneda_Id = Tipo_Moneda.Moneda_Id INNER JOIN Detalle_Factura
+ON Factura.Numero_Factura = Detalle_Factura.Numero_Factura INNER JOIN Producto
+ON Detalle_Factura.Producto_Id = Producto.Producto_Id
+ORDER BY Factura.Fecha
+
+INNER JOIN Producto
+ON Factura.Producto_Id = Producto.Producto_Id;
+
+select * from Detalle_Factura
+select * from Factura
+select * from Producto
+select * from Cliente
+
+

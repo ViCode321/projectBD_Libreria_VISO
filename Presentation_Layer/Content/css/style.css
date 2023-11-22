@@ -27,3 +27,13 @@
     .select:focus {
         color: #000000;
     }
+
+/* Estilo predeterminado del select */
+.date {
+    color: #808080;
+}
+    /* Estilo cuando el select está enfocado (activo) */
+    .date:focus {
+        color: #000000;
+    }
+

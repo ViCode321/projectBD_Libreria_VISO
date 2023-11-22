@@ -23,6 +23,14 @@ namespace Presentation_Layer.Controllers
             return View();
         }
 
+        public ActionResult Sale()
+        {
+            Sales sale = new Sales();
+            List<Venta> ventas = sale.ObtenerTodasLasVentas();
+
+            return View("Sale", ventas);
+        }
+
         public ActionResult Search()
         {
             // Al cargar la página, obtén todos los productos
@@ -55,7 +63,6 @@ namespace Presentation_Layer.Controllers
             return View("Search", productos); // Devuelve la vista de búsqueda con los resultados
         }
 
-
         public ActionResult GetAllProducts()
         {
             Search search = new Search();
@@ -66,14 +73,19 @@ namespace Presentation_Layer.Controllers
 
         public ActionResult Update()
         {
-            return View();
+            Search search = new Search();
+            List<Product> productos = search.ObtenerTodosLosProductos();
+
+            return View("Update", productos);
         }
 
-        [HttpGet]
+
         public ActionResult Insert()
         {
-            // Puedes necesitar cargar datos adicionales, como las listas de proveedores, marcas y categorías.
-            return View();
+            Search search = new Search();
+            List<Product> productos = search.ObtenerTodosLosProductos();
+
+            return View("Insert", productos);
         }
 
         [HttpPost]
@@ -99,17 +111,36 @@ namespace Presentation_Layer.Controllers
             // Si hay errores de validación, regresa a la vista de inserción con los errores.
             return View(product);
         }
-
-        public ActionResult About()
+        
+        [HttpPost]
+        public ActionResult ActualizarProducto(int id, string descripcion, string proveedor, string categoria, string marca, int cantidad, decimal costo, decimal precio)
         {
-            ViewBag.Message = "Your application description page.";
-            return View();
+            try
+            {
+                // Obtener el producto de la base de datos
+                Search search = new Search();
+                Product producto = search.ObtenerProductoPorId(id);
+
+                // Actualizar los campos
+                producto.Descripcion = descripcion;
+                producto.ProveedorNombre = proveedor;
+                producto.CategoriaNombre = categoria;
+                producto.MarcaNombre = marca;
+                producto.Cantidad = cantidad;
+                producto.Costo = costo;
+                producto.Precio = precio;
+
+                // Guardar los cambios en la base de datos
+                _insertproduct.ActualizarProducto(producto);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // Manejar errores según tus necesidades
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
     }
 }
