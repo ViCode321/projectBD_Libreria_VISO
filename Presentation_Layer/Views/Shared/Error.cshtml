@@ -3,11 +3,22 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Error</title>
+    @model System.Exception
 </head>
+
 <body>
     <hgroup>
         <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <p>@ViewBag.ErrorMessage</p>
+            <p>@ViewBag.ErrorDetails</p>
+
+        }
+        else
+        {
+            <p>Se produjo un error y no se proporcionaron detalles adicionales.</p>
+        }
     </hgroup>
 </body>
 </html>

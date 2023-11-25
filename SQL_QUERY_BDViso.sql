@@ -372,7 +372,26 @@ ON Factura.Producto_Id = Producto.Producto_Id;
 
 select * from Detalle_Factura
 select * from Factura
-select * from Producto
+select * from Producto WHERE Producto_Id = 1;
 select * from Cliente
 
-
+UPDATE Producto 
+SET Descripcion = '@descripcion',
+Proveedor_Id = '@proveedorId', 
+Categoria_Id = '@categoriaId',
+Marca_Id = '@marcaId',
+Cantidad = '@cantidad',
+Costo = '@costo',
+Precio = '@precio'
+WHERE Producto_Id = 1
+/*
+string query = "UPDATE Producto " +
+                "SET Descripcion = @descripcion, " +
+                "Proveedor_Id = @proveedorId, " +
+                "Categoria_Id = @categoriaId, " +
+                "Marca_Id = @marcaId, " +
+                "Cantidad = @cantidad, " +
+                "Costo = @costo, " +
+                "Precio = @precio " +
+                "WHERE Producto_Id = @id";
+*/

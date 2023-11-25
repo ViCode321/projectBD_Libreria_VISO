@@ -144,7 +144,7 @@ body {
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
     transition: 0.5s;
-    background-color: #0A122A;
+    background-color: var(--white-color);
 }
 
 .main {

@@ -111,7 +111,7 @@
             </table>
         </div>
     </div>
-  
+
     <!-- Modal -->
     <div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -123,37 +123,39 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editarProductoForm">
+                    <form id="updateProductForm" action="@Url.Action("ActualizarProducto")" method="post">
+                        <div class="form-group">
+                            <input type="hidden" id="productoId" name="id" />
+                        </div>
                         <div class="form-group">
                             <label for="inputDescripcion">Descripción</label>
-                            <input type="text" class="form-control" id="inputDescripcion" name="inputDescripcion">
+                            <input type="text" class="form-control" id="inputDescripcion" name="descripcion">
                         </div>
                         <div class="form-group">
                             <label for="inputProveedor">Proveedor</label>
-                            <input type="text" class="form-control" id="inputProveedor" name="inputProveedor">
+                            <input type="text" class="form-control" id="inputProveedor" name="proveedor">
                         </div>
                         <div class="form-group">
                             <label for="inputCategoria">Categoría</label>
-                            <input type="text" class="form-control" id="inputCategoria" name="inputCategoria">
+                            <input type="text" class="form-control" id="inputCategoria" name="categoria">
                         </div>
                         <div class="form-group">
                             <label for="inputMarca">Marca</label>
-                            <input type="text" class="form-control" id="inputMarca" name="inputMarca">
+                            <input type="text" class="form-control" id="inputMarca" name="marca">
                         </div>
                         <div class="form-group">
                             <label for="inputCantidad">Cantidad</label>
-                            <input type="text" class="form-control" id="inputCantidad" name="inputCantidad">
+                            <input type="text" class="form-control" id="inputCantidad" name="cantidad">
                         </div>
                         <div class="form-group">
                             <label for="inputCosto">Costo</label>
-                            <input type="text" class="form-control" id="inputCosto" name="inputCosto">
+                            <input type="text" class="form-control" id="inputCosto" name="costo">
                         </div>
                         <div class="form-group">
                             <label for="inputPrecio">Precio</label>
-                            <input type="text" class="form-control" id="inputPrecio" name="inputPrecio">
+                            <input type="text" class="form-control" id="inputPrecio" name="precio">
                         </div>
                         <div class="form-group mt-3">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
                     </form>
@@ -161,63 +163,33 @@
             </div>
         </div>
     </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="~/Scripts/Scripts/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-$(document).ready(function () {
-        // ... Otro código ...
+    <script>
+        function editarProducto(id) {
+            // Obtén los datos del producto
+            var descripcion = document.querySelector(`td[data-id='${id}'][data-columna='Descripcion']`).innerText;
+            var proveedor = document.querySelector(`td[data-id='${id}'][data-columna='Proveedor']`).innerText;
+            var categoria = document.querySelector(`td[data-id='${id}'][data-columna='Categoria']`).innerText;
+            var marca = document.querySelector(`td[data-id='${id}'][data-columna='Marca']`).innerText;
+            var cantidad = document.querySelector(`td[data-id='${id}'][data-columna='Cantidad']`).innerText;
+            var costo = document.querySelector(`td[data-id='${id}'][data-columna='Costo']`).innerText;
+            var precio = document.querySelector(`td[data-id='${id}'][data-columna='Precio']`).innerText;
 
-        // Manejar el envío del formulario
-        $('#editarProductoForm').on('submit', function (event) {
-            event.preventDefault(); // Evitar el envío del formulario por defecto
+            // Rellena los campos de entrada en la ventana emergente con los datos del producto
+            $('#productoId').val(id);
+            $('#inputDescripcion').val(descripcion);
+            $('#inputProveedor').val(proveedor);
+            $('#inputCategoria').val(categoria);
+            $('#inputMarca').val(marca);
+            $('#inputCantidad').val(cantidad);
+            $('#inputCosto').val(costo);
+            $('#inputPrecio').val(precio);
 
-            // Obtener los datos del formulario
-            var id = /* obtener el ID del producto */;
-            var descripcion = $('#inputDescripcion').val();
-            var proveedor = $('#inputProveedor').val();
-            var categoria = $('#inputCategoria').val();
-            var marca = $('#inputMarca').val();
-            var cantidad = $('#inputCantidad').val();
-            var costo = $('#inputCosto').val();
-            var precio = $('#inputPrecio').val();
+            // Muestra la ventana emergente
+            $('#modalEditarProducto').modal('show');
+        }
+    </script>
 
-            // Realizar la solicitud AJAX
-            $.ajax({
-                url: '@Url.Action("ActualizarProducto", "TuControlador")',
-                type: 'POST',
-                data: {
-                    id: id,
-                    descripcion: descripcion,
-                    proveedor: proveedor,
-                    categoria: categoria,
-                    marca: marca,
-                    cantidad: cantidad,
-                    costo: costo,
-                    precio: precio
-                },
-                success: function (result) {
-                    if (result.success) {
-                        // Actualización exitosa
-                        alert('Producto actualizado correctamente.');
-                        // Cerrar la ventana emergente
-                        $('#modalEditarProducto').modal('hide');
-                        // Puedes recargar la página o actualizar solo la fila modificada según tus necesidades
-                        // window.location.reload();
-                    } else {
-                        // Manejar el caso en que la actualización no fue exitosa
-                        alert('Error al actualizar el producto: ' + result.message);
-                    }
-                },
-                error: function () {
-                    alert('Error al actualizar el producto.');
-                }
-            });
-        });
-
-        // ... Otro código ...
-    });
-</script>

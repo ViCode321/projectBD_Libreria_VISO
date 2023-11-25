@@ -33,38 +33,6 @@ namespace Data_Layer
             }
         }
 
-        public void ActualizarProducto(Product product)
-        {
-            using (SqlConnection connection = GetConnection())
-            {
-                connection.Open();
-
-                string query = "UPDATE Producto " +
-                               "SET Descripcion = @descripcion, " +
-                               "Proveedor_Id = @proveedorId, " +
-                               "Categoria_Id = @categoriaId, " +
-                               "Marca_Id = @marcaId, " +
-                               "Cantidad = @cantidad, " +
-                               "Costo = @costo, " +
-                               "Precio = @precio " +
-                               "WHERE Producto_Id = @id";
-
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Parámetros
-                command.Parameters.AddWithValue("@descripcion", product.Descripcion);
-                command.Parameters.AddWithValue("@proveedorId", product.ProveedorId);
-                command.Parameters.AddWithValue("@categoriaId", product.CategoriaId);
-                command.Parameters.AddWithValue("@marcaId", product.MarcaId);
-                command.Parameters.AddWithValue("@cantidad", product.Cantidad);
-                command.Parameters.AddWithValue("@costo", product.Costo);
-                command.Parameters.AddWithValue("@precio", product.Precio);
-                command.Parameters.AddWithValue("@id", product.Id);
-
-                command.ExecuteNonQuery();
-            }
-        }
-
     }
 
 }

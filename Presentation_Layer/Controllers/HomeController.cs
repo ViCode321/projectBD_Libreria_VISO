@@ -11,10 +11,14 @@ namespace Presentation_Layer.Controllers
 {
     public class HomeController : Controller
     {
+        private Get _getproduct;
+        private Update _updateproduct;
         private Insert _insertproduct;
 
         public HomeController()
         {
+            _getproduct = new Get();
+            _updateproduct = new Update();
             _insertproduct = new Insert();
         }
 
@@ -25,17 +29,17 @@ namespace Presentation_Layer.Controllers
 
         public ActionResult Sale()
         {
-            Sales sale = new Sales();
-            List<Venta> ventas = sale.ObtenerTodasLasVentas();
+            //Get obtener = new Get();
+            List<Venta> ventas = _getproduct.ObtenerTodasLasVentas();
+//            Sales sale = new Sales();
+//          List<Venta> ventas = sale.ObtenerTodasLasVentas();
 
             return View("Sale", ventas);
         }
 
         public ActionResult Search()
         {
-            // Al cargar la página, obtén todos los productos
-            Search search = new Search();
-            List<Product> productos = search.ObtenerTodosLosProductos();
+            List<Product> productos = _getproduct.ObtenerTodosLosProductos();
 
             // Pasa la lista de productos a la vista
             return View("Search", productos);
@@ -63,37 +67,93 @@ namespace Presentation_Layer.Controllers
             return View("Search", productos); // Devuelve la vista de búsqueda con los resultados
         }
 
+        [HttpPost]
+        public ActionResult ActualizarProducto(int id, string descripcion, string proveedor, string categoria, string marca, int cantidad, decimal costo, decimal precio)
+        {
+            try
+            {
+                string errorMessage = _updateproduct.ActualizarProductoSearch(id, descripcion, proveedor, categoria, marca, cantidad, costo, precio);
+
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    // Si hay un error, mostrarlo en la vista
+                    ViewBag.Error = "Proveedor, marca o categoría no existe en la base de datos.";
+                    return View("Search");
+                }
+
+                // Obtener IDs de proveedor, marca y categoría por nombre
+                int proveedorId = _updateproduct.ObtenerProveedorIdPorNombre(proveedor);
+                int marcaId = _updateproduct.ObtenerMarcaIdPorNombre(marca);
+                int categoriaId = _updateproduct.ObtenerCategoriaIdPorNombre(categoria);
+
+                // Validar existencia de proveedor, marca y categoría antes de continuar
+                if (proveedorId == 0 || marcaId == 0 || categoriaId == 0)
+                {
+                    ViewBag.Error = "Proveedor, marca o categoría no existe en la base de datos.";
+                    return View("Error");
+                }
+
+                // Llamar a la función ActualizarProductoSearch con los parámetros necesarios
+                _updateproduct.ActualizarProductoSearch(id, descripcion, proveedor, categoria, marca, cantidad, costo, precio);
+
+                // Obtener los productos actualizados después de la actualización
+                List<Product> productosActualizados = _getproduct.ObtenerTodosLosProductos();
+
+                return View("Search", productosActualizados); // Devuelve la vista de búsqueda con los resultados actualizados
+            }
+            catch (Exception ex)
+            {
+                // Log y manejo de excepciones generales
+                ViewBag.ErrorMessage = "Error al actualizar el producto.";
+                ViewBag.ErrorDetails = ex.Message;
+                return View("Error");
+            }
+        }
+
         public ActionResult GetAllProducts()
         {
-            Search search = new Search();
-            List<Product> productos = search.ObtenerTodosLosProductos();
+            //Search search = new Search();
+            //Get obtener = new Get();
+            List<Product> productos = _getproduct.ObtenerTodosLosProductos();
 
             return View("Search", productos);
         }
 
         public ActionResult Update()
         {
-            Search search = new Search();
-            List<Product> productos = search.ObtenerTodosLosProductos();
+            //Search search = new Search();
+            List<Product> productos = _getproduct.ObtenerTodosLosProductos();
 
-            return View("Update", productos);
+            return View("Search", productos);
         }
+        
+        /*[HttpPost]
+        public ActionResult UpdateProduct(Product product)
+        {
+            _updateproduct = new Update();
 
+            if (ModelState.IsValid)
+            {
+                _updateproduct.ActualizarProducto(product);
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+        }*/
 
         public ActionResult Insert()
         {
-            Search search = new Search();
-            List<Product> productos = search.ObtenerTodosLosProductos();
+            //Search search = new Search();
+            //Get obtener = new Get();
+            List<Product> productos = _getproduct.ObtenerTodosLosProductos();
 
             return View("Insert", productos);
         }
-
         [HttpPost]
         public ActionResult Insert(Product product)
         {
             if (ModelState.IsValid)
             {
-                // Traduce el valor seleccionado del proveedor al ID correspondiente
                 if (product.ProveedorId == 1)
                 {
                     product.ProveedorId = 1;
@@ -102,44 +162,10 @@ namespace Presentation_Layer.Controllers
                 {
                     product.ProveedorId = 2;
                 }
-
-                // Realiza la inserción en la base de datos
                 _insertproduct.InsertarProducto(product);
-                // Redirige a la vista de éxito o a la misma vista de inserción.
                 return RedirectToAction("Insert");
             }
-            // Si hay errores de validación, regresa a la vista de inserción con los errores.
             return View(product);
-        }
-        
-        [HttpPost]
-        public ActionResult ActualizarProducto(int id, string descripcion, string proveedor, string categoria, string marca, int cantidad, decimal costo, decimal precio)
-        {
-            try
-            {
-                // Obtener el producto de la base de datos
-                Search search = new Search();
-                Product producto = search.ObtenerProductoPorId(id);
-
-                // Actualizar los campos
-                producto.Descripcion = descripcion;
-                producto.ProveedorNombre = proveedor;
-                producto.CategoriaNombre = categoria;
-                producto.MarcaNombre = marca;
-                producto.Cantidad = cantidad;
-                producto.Costo = costo;
-                producto.Precio = precio;
-
-                // Guardar los cambios en la base de datos
-                _insertproduct.ActualizarProducto(producto);
-
-                return Json(new { success = true });
-            }
-            catch (Exception ex)
-            {
-                // Manejar errores según tus necesidades
-                return Json(new { success = false, message = ex.Message });
-            }
         }
 
     }
