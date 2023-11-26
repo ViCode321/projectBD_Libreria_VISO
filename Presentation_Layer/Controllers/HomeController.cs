@@ -40,7 +40,7 @@ namespace Presentation_Layer.Controllers
         public ActionResult Search()
         {
             List<Product> productos = _getproduct.ObtenerTodosLosProductos();
-
+            //CargarItems();
             // Pasa la lista de productos a la vista
             return View("Search", productos);
         }
@@ -109,6 +109,23 @@ namespace Presentation_Layer.Controllers
                 return View("Error");
             }
         }
+
+        /*public ActionResult CargarItems()
+        {
+            // Obtener datos para llenar los selects
+            var categorias = _getproduct.ObtenerCategorias();
+            var marcas = _getproduct.ObtenerMarcas();
+            var proveedores = _getproduct.ObtenerProveedores();
+
+            // Enviar datos a la vista
+            ViewBag.Categorias = new SelectList(categorias, "Id", "Nombre");
+            ViewBag.Marcas = new SelectList(marcas, "Id", "Nombre");
+            ViewBag.Proveedores = new SelectList(proveedores, "Id", "Nombre");
+
+            // Otras lógicas y devolución de la vista...
+            return View();
+        }*/
+
 
         public ActionResult GetAllProducts()
         {

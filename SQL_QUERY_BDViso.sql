@@ -374,6 +374,8 @@ select * from Detalle_Factura
 select * from Factura
 select * from Producto WHERE Producto_Id = 1;
 select * from Cliente
+SELECT Proveedor_Id FROM Proveedor WHERE Nombre = 'Gonper'
+select * from Categoria
 
 UPDATE Producto 
 SET Descripcion = '@descripcion',
@@ -395,3 +397,5 @@ string query = "UPDATE Producto " +
                 "Precio = @precio " +
                 "WHERE Producto_Id = @id";
 */
+
+SELECT Categoria_Id, Nombre FROM Categoria

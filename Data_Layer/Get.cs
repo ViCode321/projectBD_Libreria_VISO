@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Data_Layer
@@ -134,6 +135,95 @@ namespace Data_Layer
             }
 
             return ventas;
+        }
+
+        public List<ProductItem> ObtenerCategorias()
+        {
+            List<ProductItem> categorias = new List<ProductItem>();
+
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Categoria_Id, Nombre FROM Categoria";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    ProductItem categoria = new ProductItem
+                    {
+                        Id = Convert.ToInt32(reader["Categoria_Id"]),
+                        Nombre = reader["Nombre"].ToString()
+                    };
+
+                    categorias.Add(categoria);
+                }
+
+                reader.Close();
+            }
+            return categorias;
+        }
+
+        public List<ProductItem> ObtenerMarcas()
+        {
+            List<ProductItem> marcas = new List<ProductItem>();
+
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Marca_Id, Nombre FROM Marca";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    ProductItem marca = new ProductItem
+                    {
+                        Id = Convert.ToInt32(reader["Marca_Id"]),
+                        Nombre = reader["Nombre"].ToString()
+                    };
+
+                    marcas.Add(marca);
+                }
+
+                reader.Close();
+            }
+
+            return marcas;
+        }
+
+        public List<ProductItem> ObtenerProveedores()
+        {
+            List<ProductItem> proveedores = new List<ProductItem>();
+
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Proveedor_Id, Nombre FROM Proveedor";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    ProductItem proveedor = new ProductItem
+                    {
+                        Id = Convert.ToInt32(reader["Proveedor_Id"]),
+                        Nombre = reader["Nombre"].ToString()
+                    };
+
+                    proveedores.Add(proveedor);
+                }
+
+                reader.Close();
+            }
+
+            return proveedores;
         }
 
     }

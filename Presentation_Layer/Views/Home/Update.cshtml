@@ -94,13 +94,13 @@
                             <tr>
                                 <td>@producto.Id</td>
                                 <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Descripcion">@producto.Descripcion</td>
-                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Proveedor">@producto.ProveedorNombre</td>
-                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Categoria">@producto.CategoriaNombre</td>
-                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Marca">@producto.MarcaNombre</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Proveedor">@producto.Proveedor</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Categoria">@producto.Categoria</td>
+                                <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Marca">@producto.Marca</td>
                                 <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Cantidad">@producto.Cantidad</td>
                                 <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Costo">@producto.Costo</td>
                                 <td onclick="activarEdicion(this)" data-id="@producto.Id" data-columna="Precio">@producto.Precio</td>
-                                <td><button class="btn btn-primary" onclick="editarProducto(this)" data-id="@producto.Id" data-descripcion="@producto.Descripcion" data-proveedor="@producto.ProveedorNombre" data-categoria="@producto.CategoriaNombre" data-marca="@producto.MarcaNombre" data-cantidad="@producto.Cantidad" data-costo="@producto.Costo" data-precio="@producto.Precio">Editar</button></td>
+                                <td><button class="btn btn-primary" onclick="editarProducto(this)" data-id="@producto.Id" data-descripcion="@producto.Descripcion" data-proveedor="@producto.Proveedor" data-categoria="@producto.Categoria" data-marca="@producto.Marca" data-cantidad="@producto.Cantidad" data-costo="@producto.Costo" data-precio="@producto.Precio">Editar</button></td>
                             </tr>
                         }
                     }
