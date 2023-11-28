@@ -13,6 +13,8 @@ namespace Model_Layer
 
         [Required(ErrorMessage = "El campo Cliente es obligatorio.")]
         public string Cliente { get; set; }
+        public string ClienteApellido { get; set; }
+
 
         [Required(ErrorMessage = "El campo Fecha es obligatorio.")]
         public string Fecha { get; set; }
@@ -27,14 +29,13 @@ namespace Model_Layer
         public string TipoMoneda { get; set; }
 
         [Required(ErrorMessage = "El campo Monto es obligatorio.")]
-        public decimal Monto { get; set; }
+        public decimal Precio { get; set; }
 
         [Required(ErrorMessage = "El campo Total es obligatorio.")]
         public decimal Total { get; set; }
 
         [Required(ErrorMessage = "El campo Final es obligatorio.")]
-        public decimal Final { get; set; }
-
+        public decimal Final { get; set; }        
 
     }
 }

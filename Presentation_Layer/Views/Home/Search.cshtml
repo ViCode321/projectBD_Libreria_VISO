@@ -55,8 +55,30 @@
         </div>
     </form>
     <div id="alertMessages">
-        <!--Mensajes de alerta -->
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Error
+            </div>
+        }
     </div>
+    <div id="successMessages">
+        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+    </div>
+    <!-- Agrega este botón al final de tu vista Search.cshtml -->
+    <div class="row justify-content-center">
+        <div class="col-6 mt-2">
+            <a href="@Url.Action("Search")" class="btn btn-secondary w-100 m-4">
+                <i class="bx bx-refresh"></i> Recargar
+            </a>
+        </div>
+    </div>
+
     <!--Tabla se resultados-->
     <div class="row">
         <div class="col-12 mt-4">
@@ -113,14 +135,12 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalEditarProductoLabel">Editar producto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="updateProductForm" action="@Url.Action("ActualizarProducto")" method="post">
@@ -145,17 +165,18 @@
                         </div>
                         <div class="form-group">
                             <label for="inputCantidad">Cantidad</label>
-                            <input type="text" class="form-control" id="inputCantidad" name="cantidad">
+                            <input type="text" class="form-control cantidad" id="inputCantidad" name="cantidad">
                         </div>
                         <div class="form-group">
                             <label for="inputCosto">Costo</label>
-                            <input type="text" class="form-control" id="inputCosto" name="costo">
+                            <input type="text" class="form-control costo" id="inputCosto" name="costo">
                         </div>
                         <div class="form-group">
                             <label for="inputPrecio">Precio</label>
-                            <input type="text" class="form-control" id="inputPrecio" name="precio">
+                            <input type="text" class="form-control precio" id="inputPrecio" name="precio">
                         </div>
                         <div class="form-group mt-3">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
                     </form>
@@ -164,32 +185,42 @@
         </div>
     </div>
 </div>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <script>
-        function editarProducto(id) {
-            // Obtén los datos del producto
-            var descripcion = document.querySelector(`td[data-id='${id}'][data-columna='Descripcion']`).innerText;
-            var proveedor = document.querySelector(`td[data-id='${id}'][data-columna='Proveedor']`).innerText;
-            var categoria = document.querySelector(`td[data-id='${id}'][data-columna='Categoria']`).innerText;
-            var marca = document.querySelector(`td[data-id='${id}'][data-columna='Marca']`).innerText;
-            var cantidad = document.querySelector(`td[data-id='${id}'][data-columna='Cantidad']`).innerText;
-            var costo = document.querySelector(`td[data-id='${id}'][data-columna='Costo']`).innerText;
-            var precio = document.querySelector(`td[data-id='${id}'][data-columna='Precio']`).innerText;
+<script src="~/Scripts/Scripts/script.js"></script>
+<script>
+    $(document).ready(function () {
+        // Agregar el evento blur a los campos de cantidad, costo y precio
+        $(".cantidad, .costo, .precio").blur(function () {
+            // Obtener el valor del campo
+            var valor = parseFloat($(this).val());
 
-            // Rellena los campos de entrada en la ventana emergente con los datos del producto
-            $('#productoId').val(id);
-            $('#inputDescripcion').val(descripcion);
-            $('#inputProveedor').val(proveedor);
-            $('#inputCategoria').val(categoria);
-            $('#inputMarca').val(marca);
-            $('#inputCantidad').val(cantidad);
-            $('#inputCosto').val(costo);
-            $('#inputPrecio').val(precio);
+            // Validar si el valor es negativo
+            if (valor < 0) {
+                // Mostrar un mensaje de error
+                alert("Por favor, ingrese un valor no negativo.");
+                // Establecer el valor en cero
+                $(this).val(0);
+            }
+        });
 
-            // Muestra la ventana emergente
-            $('#modalEditarProducto').modal('show');
-        }
-    </script>
+        // Agregar el evento submit al formulario
+        $("form").submit(function () {
+            // Obtener los valores de cantidad, costo y precio
+            var cantidad = parseFloat($("#inputCantidad").val());
+            var costo = parseFloat($("#inputCosto").val());
+            var precio = parseFloat($("#inputPrecio").val());
 
+            // Validar si alguno de los valores es negativo
+            if (cantidad < 0 || costo < 0 || precio < 0) {
+                // Mostrar un mensaje de error
+                alert("Por favor, ingrese valores no negativos.");
+                // Detener el envío del formulario
+                return false;
+            }
+
+            // Continuar con el envío del formulario si todos los valores son no negativos
+            return true;
+        });
+    });
+</script>

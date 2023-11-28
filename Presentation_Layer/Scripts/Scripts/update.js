@@ -1,9 +1,9 @@
 ﻿function editarProducto(button) {
-    // Desplaza la página hacia arriba
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Obtén los valores del atributo data-
-    var descripcion = button.getAttribute("data-descripcion");
+    var id = button.getAttribute("data-id");
+    var name = button.getAttribute("data-descripcion");
     var proveedor = button.getAttribute("data-proveedor");
     var categoria = button.getAttribute("data-categoria");
     var marca = button.getAttribute("data-marca");
@@ -12,7 +12,9 @@
     var precio = button.getAttribute("data-precio");
 
     // Rellena los campos del formulario con los valores obtenidos
-    document.getElementById('name').value = descripcion;
+    document.getElementById('id').value = id;
+    document.getElementById('name').value = name;
+
 
     // Cambia el valor seleccionado de los elementos select
     document.getElementById('proveedor').value = proveedor;

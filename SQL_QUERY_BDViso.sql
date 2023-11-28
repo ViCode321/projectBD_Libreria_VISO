@@ -1,3 +1,7 @@
+drop Database BDViso;
+
+use master
+
 Create database BDViso
 
 Use BDViso
@@ -305,7 +309,7 @@ Insert into Cliente (Nombre, Apellido) Values ('Veronica', 'Martinez')
 Insert into Cliente (Nombre, Apellido) Values ('Carolina', 'Cortez')
 Insert into Cliente (Nombre, Apellido) Values ('Cristian', 'Tinoco')
 Insert into Cliente (Nombre, Apellido) Values ('Josue', 'Herrera')
-Insert into Cliente (Nombre, Apellido) Values ('Camila', 'Sanchez')
+--Insert into Cliente (Nombre, Apellido) Values ('Camila', 'Sanchez')
 --SELECT * FROM Cliente
 --Tabla Tipo Moneda
 Insert Into Tipo_Moneda(Tipo) values ('Cordoba')
@@ -321,7 +325,7 @@ Insert into Factura (Fecha,Cliente_Id,Monto_Final,Moneda_Id) Values ('2023-05-10
 Insert into Factura (Fecha,Cliente_Id,Monto_Final,Moneda_Id) Values ('2023-05-12', 7, 66, 1)
 Insert into Factura (Fecha,Cliente_Id,Monto_Final,Moneda_Id) Values ('2023-06-21', 8, 56, 1)
 Insert into Factura (Fecha,Cliente_Id,Monto_Final,Moneda_Id) Values ('2023-07-11', 9, 24, 1)
-Insert into Factura (Fecha,Cliente_Id,Monto_Final,Moneda_Id) Values ('2023-08-25', 10, 1, 2)
+--Insert into Factura (Fecha,Cliente_Id,Monto_Final,Moneda_Id) Values ('2023-08-25', 10, 1, 2)
 --Select * From Factura
 --
 Insert into Detalle_Factura (Numero_Factura,Producto_Id,Cantidad,Precio,Total_ventas) Values (1, 2, 2,5, 10)
@@ -334,7 +338,7 @@ Insert into Detalle_Factura (Numero_Factura,Producto_Id,Cantidad,Precio,Total_ve
 Insert into Detalle_Factura (Numero_Factura,Producto_Id,Cantidad,Precio,Total_ventas) Values (7, 18, 3,22, 66)
 Insert into Detalle_Factura (Numero_Factura,Producto_Id,Cantidad,Precio,Total_ventas) Values (8, 28, 4,14, 56)
 Insert into Detalle_Factura (Numero_Factura,Producto_Id,Cantidad,Precio,Total_ventas) Values (9, 55, 3,8, 24)
-Insert into Detalle_Factura (Numero_Factura,Producto_Id,Cantidad,Precio,Total_ventas) Values (10, 32, 2,18, 1)
+--Insert into Detalle_Factura (Numero_Factura,Producto_Id,Cantidad,Precio,Total_ventas) Values (10, 32, 2,18, 1)
 --Select * From Detalle_Factura
 
 /*
@@ -356,7 +360,8 @@ FROM Producto INNER JOIN Proveedor
 ON Producto.Proveedor_Id = Proveedor.Proveedor_Id INNER JOIN Categoria
 ON Producto.Categoria_Id = Categoria.Categoria_Id INNER JOIN Marca
 ON Producto.Marca_Id = Marca.Marca_Id
-WHERE LOWER(Marca.Nombre) LIKE '%memo%'
+WHERE Producto.Proveedor_Id = 1
+
 ORDER BY Marca.Nombre ASC
 
 SELECT Factura.Numero_Factura AS Id, Cliente.Nombre + ' ' + Cliente.Apellido AS 'Cliente', Factura.Fecha, Producto.Descripcion, Detalle_Factura.Cantidad, Tipo_Moneda.Tipo, Detalle_Factura.Precio AS Monto, Detalle_Factura.Total_ventas AS Total, Factura.Monto_final AS Final
@@ -366,9 +371,6 @@ ON Factura.Moneda_Id = Tipo_Moneda.Moneda_Id INNER JOIN Detalle_Factura
 ON Factura.Numero_Factura = Detalle_Factura.Numero_Factura INNER JOIN Producto
 ON Detalle_Factura.Producto_Id = Producto.Producto_Id
 ORDER BY Factura.Fecha
-
-INNER JOIN Producto
-ON Factura.Producto_Id = Producto.Producto_Id;
 
 select * from Detalle_Factura
 select * from Factura
@@ -386,6 +388,9 @@ Cantidad = '@cantidad',
 Costo = '@costo',
 Precio = '@precio'
 WHERE Producto_Id = 1
+
+INSERT INTO 
+
 /*
 string query = "UPDATE Producto " +
                 "SET Descripcion = @descripcion, " +
@@ -398,4 +403,13 @@ string query = "UPDATE Producto " +
                 "WHERE Producto_Id = @id";
 */
 
-SELECT Categoria_Id, Nombre FROM Categoria
+SELECT Proveedor.Nombre FROM Proveedor
+INNER JOIN Proveedor_Producto ON Proveedor.Proveedor_Id = Proveedor_Producto.Proveedor_Id
+INNER JOIN Producto ON Proveedor_Producto.Producto_Id = Producto.Producto_Id
+WHERE Producto.Producto_Id = 1
+
+select * from Factura
+
+select Descripcion, Precio FROM Producto WHERE Descripcion = 'Lapicero azul';
+
+select * from Tipo_Moneda

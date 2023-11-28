@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Insert";
+    ViewBag.Title = "Insertar";
 }
 
 @model List<Model_Layer.Product>
@@ -11,78 +11,89 @@
             <h1 class="display-4">Insertar Producto</h1>
         </div>
     </div>
-    <form method="post" action="@Url.Action("Insert")">
+    <form method="post" action="@Url.Action("InsertProduct")">
         <div class="row">
             <div class="col-6 mt-2">
-                <!-- 4 inputs a la izquierda -->
-                <!--<div class="form-group d-flex align-items-center mt-2">
-                    <label for="input1" class="w-25">ID:</label>
-                    <input type="number" id="id" name="id" class="form-control w-75" placeholder=0>
-                    @Html.ValidationMessage("Id", "", new { @class = "text-danger" })
-                </div>-->
                 <div class="form-group d-flex align-items-center mt-2">
-                    <label for="input2" class="w-25">Proveedor:</label>
-                    <select id="proveedor" name="proveedor" class="form-control select w-75">
-                        <option value="">Seleccione una opción</option>
-                        <option value="1">Gonper</option>
-                        <option value="2">Hispamer</option>
-                    </select>
+                    <input type="hidden" id="id" name="id" value="0" />
                 </div>
                 <div class="form-group d-flex align-items-center mt-2">
-                    <label for="input3" class="w-25">Descripción del Producto:</label>
-                    <input type="text" id="name" name="name" class="form-control w-75" placeholder="Descripción">
+                    <label for="inputname" class="w-25">Descripción:</label>
+                    <input type="text" id="name" name="name" class="form-control w-75" placeholder="Ingrese la Descripción del producto">
                     @Html.ValidationMessage("name", new { @class = "text-danger" })
                 </div>
                 <div class="form-group d-flex align-items-center mt-2">
-                    <label for="input4" class="w-25">Marca:</label>
-                    <select id="marca" name="marca" class="form-control select w-75">
-                        <option value="">Seleccione una opción</option>
-                        <option value="marca1">Marca 1</option>
-                        <option value="marca2">Marca 2</option>
+                    <label for="inputproveedor" class="w-25">Proveedor:</label>
+                    <select id="proveedor" name="proveedor" class="form-control w-75">
+                        <option value="Gonper">Gonper</option>
+                        <option value="Hispamer">Hispamer</option>
                     </select>
                 </div>
                 <div class="form-group d-flex align-items-center mt-2">
-                    <label for="input5" class="w-25">Categoria:</label>
-                    <select id="categoria" name="categoria" class="form-control select w-75">
-                        <option value="">Seleccione una opción</option>
-                        <option value="categoria1">Categoria 1</option>
-                        <option value="categoria2">Categoria 2</option>
-                    </select>
+                    <label for="inputcategoria" class="w-25">Categoria:</label>
+                    <input type="text" id="categoria" name="categoria" class="form-control w-75" placeholder="Categoria">
+                    @Html.ValidationMessage("categoria", new { @class = "text-danger" })
+                </div>
+                <div class="form-group d-flex align-items-center mt-2">
+                    <label for="inputmarca" class="w-25">Marca:</label>
+                    <input type="text" id="marca" name="marca" class="form-control w-75" placeholder="Marca">
+                    @Html.ValidationMessage("marca", new { @class = "text-danger" })
                 </div>
             </div>
             <!--4 Inputs a la derecha-->
             <div class="col-6 mt-2">
                 <div class="form-group d-flex align-items-center mt-2">
-                    <label for="amount" class="w-25">Cantidad:</label>
-                    <input type="text" id="amount" name="amount" class="form-control w-75" placeholder="0">
-                    @Html.ValidationMessage("amount", new { @class = "text-danger" })
+                    <label for="inputcantidad" class="w-25">Cantidad:</label>
+                    <input type="number" id="cantidad" name="cantidad" class="form-control w-75" placeholder="0" min="0" onblur="validarNumeroNegativo(this)">
+                    @Html.ValidationMessage("cantidad", new { @class = "text-danger" })
                 </div>
                 <div class="form-group d-flex align-items-center mt-2">
-                    <label for="input2" class="w-25">Costo:</label>
-                    <input type="text" id="amount" name="amount" class="form-control w-75" placeholder=0>
+                    <label for="inputcosto" class="w-25">Costo:</label>
+                    <input type="number" id="costo" name="costo" class="form-control w-75" placeholder="0" min="0" step="0.01" onblur="validarNumeroNegativo(this)">
                     @Html.ValidationMessage("Costo", "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group d-flex align-items-center mt-2">
-                    <label for="input3" class="w-25">Precio:</label>
-                    <input type="number" id="price" name="price" class="form-control w-75" placeholder=0>
+                    <label for="inputprecio" class="w-25">Precio:</label>
+                    <input type="number" id="precio" name="precio" class="form-control w-75" placeholder="0" min="0" step="0.01" onblur="validarNumeroNegativo(this)">
                     @Html.ValidationMessage("Precio", "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group d-flex align-items-center mt-2">
-                    <label for="input4" class="w-25">Total Producto:</label>
-                    <input type="text" id="total" name="total" class="form-control w-75" placeholder=0 readonly>
                 </div>
             </div>
         </div>
 
-        <!--Botón de búsqueda-->
+        <!--Botón para insertar-->
         <div class="row justify-content-center">
             <div class="col-6 mt-2">
-                <button type="submit" class="btn btn-primary w-100 m-4">
-                    <i class="bx bx-plus"></i> Agregar
+                <button type="submit" class="btn btn-primary w-100 m-2">
+                    <i class="bx bx-plus"></i> Insertar
                 </button>
             </div>
         </div>
     </form>
+    <div id="alertMessages">
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+    </div>
+    <div id="successMessages">
+        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+    </div>
+    <!-- Agrega este botón al final de tu vista Search.cshtml -->
+    <div class="row justify-content-center">
+        <div class="col-6 mt-2">
+            <a href="@Url.Action("Insert")" class="btn btn-secondary w-100 m-2">
+                <i class="bx bx-refresh"></i> Recargar
+            </a>
+        </div>
+    </div>
+
     <!--Tabla se resultados-->
     <div class="row">
         <div class="col-12 mt-4">
@@ -135,6 +146,66 @@
             </table>
         </div>
     </div>
-
-
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('form').addEventListener('submit', function (event) {
+            // Validar cada campo
+            if (!validarCampo('proveedor')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('name')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('categoria')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('marca')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('cantidad')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('costo')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('precio')) {
+                event.preventDefault();
+                return;
+            }
+        });
+
+        // Función para validar un campo específico
+        function validarCampo(idCampo) {
+            var valorCampo = document.getElementById(idCampo).value.trim();
+
+            if (valorCampo === '') {
+                alert('Por favor, ingrese todos los valores');
+                return false;
+            }
+
+            return true;
+        }
+    });
+    // Función para validar números negativos
+    function validarNumeroNegativo(input) {
+        var valor = parseFloat(input.value);
+        if (isNaN(valor) || valor < 0) {
+            alert('El valor no puede ser negativo. Por favor, ingrese un valor no negativo.');
+            input.value = "0"; // O establecer el valor deseado
+        }
+    }
+</script>

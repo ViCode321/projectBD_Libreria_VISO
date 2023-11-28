@@ -123,7 +123,7 @@ namespace Data_Layer
                         Producto = reader["Producto"].ToString(),
                         Cantidad = Convert.ToInt32(reader["Cantidad"]),
                         TipoMoneda = reader["Tipo"].ToString(),
-                        Monto = (decimal)Convert.ToSingle(reader["Monto"]),
+                        Precio = (decimal)Convert.ToSingle(reader["Monto"]),
                         Total = (decimal)Convert.ToSingle(reader["Total"]),
                         Final = (decimal)Convert.ToSingle(reader["Final"]),
                     };
@@ -137,7 +137,351 @@ namespace Data_Layer
             return ventas;
         }
 
-        public List<ProductItem> ObtenerCategorias()
+        public bool ExisteProveedor(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(1) FROM Proveedor WHERE Proveedor_Id = @id";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@id", id);
+
+                    return (int)command.ExecuteScalar() > 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Manejar excepciones de SQL Server
+                throw new Exception("Error al verificar la existencia del proveedor.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Manejar otras excepciones
+                throw new Exception("Error inesperado al verificar la existencia del proveedor.", ex);
+            }
+        }
+
+        public bool ExisteMarca(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(1) FROM Marca WHERE Marca_Id = @id";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@id", id);
+
+                    return (int)command.ExecuteScalar() > 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Manejar excepciones de SQL Server
+                throw new Exception("Error al verificar la existencia de la marca.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Manejar otras excepciones
+                throw new Exception("Error inesperado al verificar la existencia de la marca.", ex);
+            }
+        }
+
+        public bool ExisteCategoria(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(1) FROM Categoria WHERE Categoria_Id = @id";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@id", id);
+
+                    return (int)command.ExecuteScalar() > 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Manejar excepciones de SQL Server
+                throw new Exception("Error al verificar la existencia de la categoría.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Manejar otras excepciones
+                throw new Exception("Error inesperado al verificar la existencia de la categoría.", ex);
+            }
+        }
+
+        public int ObtenerProveedorIdPorNombre(string nombre)
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Proveedor_Id FROM Proveedor WHERE Nombre = @nombre";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@nombre", nombre);
+
+                object result = command.ExecuteScalar();
+
+                return result != null ? Convert.ToInt32(result) : 0;
+            }
+        }
+
+        public int ObtenerMarcaIdPorNombre(string nombre)
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Marca_Id FROM Marca WHERE Nombre = @nombre";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@nombre", nombre);
+
+                object result = command.ExecuteScalar();
+
+                return result != null ? Convert.ToInt32(result) : 0;
+            }
+        }
+
+        public int ObtenerCategoriaIdPorNombre(string nombre)
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Categoria_Id FROM Categoria WHERE Nombre = @nombre";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@nombre", nombre);
+
+                object result = command.ExecuteScalar();
+
+                return result != null ? Convert.ToInt32(result) : 0;
+            }
+        }
+
+        public bool ExisteProducto(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(*) FROM Producto WHERE Producto_Id = @id";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@id", id);
+
+                    return (int)command.ExecuteScalar() > 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Manejar excepciones de SQL Server
+                throw new Exception("Error al verificar la existencia del producto.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Manejar otras excepciones
+                throw new Exception("Error inesperado al verificar la existencia del producto.", ex);
+            }
+        }
+
+        public bool ActualizarProducto(string name)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+
+                    string query = "SELECT COUNT(*) FROM Producto WHERE Descripcion = @name";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@name", name);
+
+                    return (int)command.ExecuteScalar() > 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Manejar excepciones de SQL Server
+                throw new Exception("Error al verificar la existencia del producto.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Manejar otras excepciones
+                throw new Exception("Error inesperado al verificar la existencia del producto.", ex);
+            }
+        }
+
+        public int ObtenerProductoIdPorDescripcion(string descripcion)
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Producto_Id FROM Producto WHERE Descripcion = @descripcion";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@descripcion", descripcion);
+
+                object result = command.ExecuteScalar();
+
+                return result != null ? Convert.ToInt32(result) : 0;
+            }
+        }
+
+        public int ObtenerTipoMonedaIdPorTipo(string tipo)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+
+                    string query = "SELECT Moneda_Id FROM Tipo_Moneda WHERE Tipo = @tipo";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@tipo", tipo);
+
+                    object result = command.ExecuteScalar();
+
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Manejar excepciones de SQL Server
+                throw new Exception("Error al obtener el ID del tipo de moneda.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Manejar otras excepciones
+                throw new Exception("Error inesperado al obtener el ID del tipo de moneda.", ex);
+            }
+        }
+
+        public int ObtenerClienteIdPorNombre(string nombreCompleto)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+
+                    string query = "SELECT Cliente_Id FROM Cliente WHERE CONCAT(Nombre, ' ', Apellido) = @nombreCompleto";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@nombreCompleto", nombreCompleto);
+
+                    object result = command.ExecuteScalar();
+
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Manejar excepciones de SQL Server
+                throw new Exception("Error al obtener el ID del cliente.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Si no se encuentra el cliente, intentar insertarlo
+                if (ex.Message.Contains("Error al obtener el ID del cliente") && ex.InnerException is SqlException innerException && innerException.Number == 208)
+                {
+                    // Intentar insertar al cliente
+                    return InsertarClienteYObtenerId(nombreCompleto);
+                }
+
+                // Manejar otras excepciones
+                throw new Exception("Error inesperado al obtener el ID del cliente.", ex);
+            }
+        }
+
+        public int ObtenerPrescioDeProducto(string name)
+        {
+            try
+            {
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+
+                    string query = "SELECT Precio FROM Producto WHERE Descripcion = @name";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@name", name);
+                    object result = command.ExecuteScalar();
+                    return result != null ? Convert.ToInt32(result) : 0;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Manejar excepciones de SQL Server
+                throw new Exception("Error al obtener el precio.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Manejar otras excepciones
+                throw new Exception("Error inesperado al obtener el precio.", ex);
+            }
+        }
+
+
+        public int InsertarClienteYObtenerId(string nombreCompleto)
+        {
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                // Separar el nombre y apellido
+                string[] partesNombre = nombreCompleto.Split(' ');
+                string nombre = partesNombre[0];
+                string apellido = partesNombre.Length > 1 ? partesNombre[1] : "";
+
+                // Insertar al cliente
+                string insertClienteQuery = "INSERT INTO Cliente (Nombre, Apellido) VALUES (@nombre, @apellido); SELECT SCOPE_IDENTITY();";
+                SqlCommand insertClienteCommand = new SqlCommand(insertClienteQuery, connection);
+                insertClienteCommand.Parameters.AddWithValue("@nombre", nombre);
+                insertClienteCommand.Parameters.AddWithValue("@apellido", apellido);
+
+                // Obtener el ID del cliente insertado
+                return Convert.ToInt32(insertClienteCommand.ExecuteScalar());
+            }
+        }
+
+        public List<Venta> ObtenerTodosNombresDeLosProductos()
+        {
+            List<Venta> productos = new List<Venta>();
+
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+
+                string query = "SELECT Descripcion as Producto FROM Producto";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Venta producto = new Venta
+                    {
+                        Producto = reader["Producto"].ToString(),
+                    };
+
+                    productos.Add(producto);
+                }
+
+                reader.Close();
+            }
+
+            return productos;
+        }
+
+
+        /*public List<ProductItem> ObtenerCategoriasPorProducto(int productoId)
         {
             List<ProductItem> categorias = new List<ProductItem>();
 
@@ -145,28 +489,34 @@ namespace Data_Layer
             {
                 connection.Open();
 
-                string query = "SELECT Categoria_Id, Nombre FROM Categoria";
-                SqlCommand command = new SqlCommand(query, connection);
+                string query = "SELECT Categoria.Nombre FROM Categoria " +
+                               "INNER JOIN Producto ON Categoria.Categoria_Id = Producto.Categoria_Id " +
+                               "WHERE Producto.Producto_Id = @productoId";
 
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    ProductItem categoria = new ProductItem
+                    command.Parameters.AddWithValue("@productoId", productoId);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        Id = Convert.ToInt32(reader["Categoria_Id"]),
-                        Nombre = reader["Nombre"].ToString()
-                    };
+                        ProductItem categoria = new ProductItem
+                        {
+                            Nombre = reader["Nombre"].ToString()
+                        };
 
-                    categorias.Add(categoria);
+                        categorias.Add(categoria);
+                    }
+
+                    reader.Close();
                 }
-
-                reader.Close();
             }
+
             return categorias;
         }
 
-        public List<ProductItem> ObtenerMarcas()
+        public List<ProductItem> ObtenerMarcasPorProducto(int productoId)
         {
             List<ProductItem> marcas = new List<ProductItem>();
 
@@ -174,29 +524,34 @@ namespace Data_Layer
             {
                 connection.Open();
 
-                string query = "SELECT Marca_Id, Nombre FROM Marca";
-                SqlCommand command = new SqlCommand(query, connection);
+                string query = "SELECT Marca.Nombre FROM Marca " +
+                               "INNER JOIN Producto ON Marca.Marca_Id = Producto.Marca_Id " +
+                               "WHERE Producto.Producto_Id = @productoId";
 
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    ProductItem marca = new ProductItem
+                    command.Parameters.AddWithValue("@productoId", productoId);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        Id = Convert.ToInt32(reader["Marca_Id"]),
-                        Nombre = reader["Nombre"].ToString()
-                    };
+                        ProductItem marca = new ProductItem
+                        {
+                            Nombre = reader["Nombre"].ToString()
+                        };
 
-                    marcas.Add(marca);
+                        marcas.Add(marca);
+                    }
+
+                    reader.Close();
                 }
-
-                reader.Close();
             }
 
             return marcas;
         }
 
-        public List<ProductItem> ObtenerProveedores()
+        public List<ProductItem> ObtenerProveedoresPorProducto(int productoId)
         {
             List<ProductItem> proveedores = new List<ProductItem>();
 
@@ -204,27 +559,32 @@ namespace Data_Layer
             {
                 connection.Open();
 
-                string query = "SELECT Proveedor_Id, Nombre FROM Proveedor";
-                SqlCommand command = new SqlCommand(query, connection);
+                string query = "SELECT Proveedor.Nombre FROM Proveedor " +
+                               "INNER JOIN Proveedor_Producto ON Proveedor.Proveedor_Id = Proveedor_Producto.Proveedor_Id " +
+                               "INNER JOIN Producto ON Proveedor_Producto.Producto_Id = Producto.Producto_Id " +
+                               "WHERE Producto.Producto_Id = @productoId";
 
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    ProductItem proveedor = new ProductItem
+                    command.Parameters.AddWithValue("@productoId", productoId);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        Id = Convert.ToInt32(reader["Proveedor_Id"]),
-                        Nombre = reader["Nombre"].ToString()
-                    };
+                        ProductItem proveedor = new ProductItem
+                        {
+                            Nombre = reader["Nombre"].ToString()
+                        };
 
-                    proveedores.Add(proveedor);
+                        proveedores.Add(proveedor);
+                    }
+
+                    reader.Close();
                 }
-
-                reader.Close();
             }
 
             return proveedores;
-        }
-
+        }*/
     }
 }

@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace Model_Layer
 {
     // En el Model Layer
     public class Product
-    {        
+    {
         //Códigos
         public int Id { get; set; }
         public int ProveedorId { get; set; }
@@ -36,5 +36,5 @@ namespace Model_Layer
 
         [Required(ErrorMessage = "El campo Precio es obligatorio.")]
         public decimal Precio { get; set; }
-    }       
+    }
 }

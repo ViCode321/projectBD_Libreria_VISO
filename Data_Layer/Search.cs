@@ -39,9 +39,9 @@ namespace Data_Layer
                                 "FROM Producto INNER JOIN Proveedor ON Producto.Proveedor_Id = Proveedor.Proveedor_Id " +
                                 "INNER JOIN Categoria ON Producto.Categoria_Id = Categoria.Categoria_Id " +
                                 "INNER JOIN Marca ON Producto.Marca_Id = Marca.Marca_Id " +
-                                "WHERE Producto.Producto_Id LIKE @searchTerm " + 
+                                "WHERE Producto.Producto_Id LIKE @searchTerm " +
                                 "ORDER BY Producto.Producto_Id";
-                    
+
                     }
                     else if (searchBy == "category")
                     {
@@ -52,7 +52,7 @@ namespace Data_Layer
                                 "INNER JOIN Marca ON Producto.Marca_Id = Marca.Marca_Id " +
                                 "WHERE Categoria.Nombre LIKE @searchTerm " +
                                 "ORDER BY Producto.Producto_Id";
-                    }               
+                    }
                     else if (searchBy == "marca")
                     {
                         query = "SELECT Producto.Producto_Id AS Código, Producto.Descripcion, Proveedor.Nombre AS Proveedor, " +
@@ -61,7 +61,7 @@ namespace Data_Layer
                                 "INNER JOIN Categoria ON Producto.Categoria_Id = Categoria.Categoria_Id " +
                                 "INNER JOIN Marca ON Producto.Marca_Id = Marca.Marca_Id " +
                                 "WHERE Marca.Nombre LIKE @searchTerm " +
-                                "ORDER BY Producto.Producto_Id";                
+                                "ORDER BY Producto.Producto_Id";
                     }
                     #endregion
 

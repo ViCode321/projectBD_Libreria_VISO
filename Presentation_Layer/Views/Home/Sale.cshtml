@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Sale";
+    ViewBag.Title = "Ventas";
 }
 
 @model List<Model_Layer.Venta>
@@ -11,62 +11,97 @@
             <h1 class="display-4">Venta al contado</h1>
         </div>
     </div>
-    <div class="row">
-        <div class="col-6 mt-2">
-            <!-- 5 inputs a la izquierda -->
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputcliente" class="w-25">Cliente:</label>
-                <input type="text" id="cliente" name="cliente" class="form-control date w-75" placeholder="Nombre y apellido del cliente">
+    @using (Html.BeginForm("InsertSale", "Home", FormMethod.Post, new { id = "formularioVenta" }))
+    {
+        <form method="post" action="@Url.Action("InsertSale")">
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <!-- 5 inputs a la izquierda -->
+                    <div class="form-group d-flex align-items-center mt-2">
+                        <label for="inputcliente" class="w-25">Cliente:</label>
+                        <input type="text" id="cliente" name="cliente" class="form-control date w-75" placeholder="Nombre y apellido del cliente">
+                    </div>
+                    <div class="form-group d-flex align-items-center mt-2">
+                        <label for="inputproducto" class="w-25">Producto:</label>
+                        <select id="inputproducto" name="Producto" class="form-control select w-75">
+                            <option value="">Selecciona un producto</option>
+                            @{
+                                var productos = ViewBag.Producto as SelectList;
+                                if (productos != null)
+                                {
+                                    foreach (var producto in productos)
+                                    {
+                                        <option value="@producto.Value">@producto.Text</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group d-flex align-items-center mt-2">
+                        <label for="inputfecha" class="w-25">Fecha:</label>
+                        <input type="date" id="fecha" name="fecha" class="form-control select w-75" placeholder="yyyy-mm-dd">
+                    </div>
+                    <div class="form-group d-flex align-items-center mt-2">
+                        <label for="inputcantidad" class="w-25">Cantidad:</label>
+                        <input type="number" id="cantidad" name="cantidad" class="form-control w-75" placeholder=0>
+                    </div>
+                </div>
+                <!--4 Inputs a la derecha-->
+                <div class="col-6 mt-2">
+                    <div class="form-group d-flex align-items-center mt-2">
+                        <label for="tipoMoneda" class="w-25">Tipo de Moneda:</label>
+                        <select id="tipoMoneda" name="tipoMoneda" class="form-control w-75">
+                            <option value="Cordoba">Córdoba</option>
+                            <option value="Dolar">Dólar</option>
+                        </select>
+                    </div>
+                    <div class="form-group d-flex align-items-center mt-2">
+                        <label for="inputprecio" class="w-25">Precio:</label>
+                        <input type="text" id="precio" name="precio" class="form-control w-75" placeholder="0.00" pattern="[0-9]+(\.[0-9]+)?" readonly>
+                    </div>
+                    <div class="form-group d-flex align-items-center mt-2">
+                        <label for="inputtotal" class="w-25">Venta Total:</label>
+                        <input type="text" id="total" name="total" class="form-control w-75" placeholder="0" readonly>
+                    </div>
+                    <div class="form-group d-flex align-items-center mt-2">
+                        <label for="inputfinal" class="w-25">Venta Final:</label>
+                        <input type="text" id="final" name="final" class="form-control w-75" placeholder="0" readonly>
+                    </div>
+                </div>
             </div>
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputproducto" class="w-25">Producto:</label>
-                <input type="text" id="producto" name="producto" class="form-control w-75" placeholder="Descripción del producto">
-            </div>
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputfecha" class="w-25">Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control select w-75" placeholder="yyyy-mm-dd">
-            </div>
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputproducto" class="w-25">Producto:</label>
-                <input type="text" id="producto" name="producto" class="form-control w-75" placeholder="Descripción del producto">
-            </div>
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputcantidad" class="w-25">Cantidad:</label>
-                <input type="number" id="cantidad" name="cantidad" class="form-control w-75" placeholder=0>
-            </div>
-        </div>
 
-        <!--4 Inputs a la derecha-->
-        <div class="col-6 mt-2">
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputmoneda" class="w-25">Tipo de Moneda:</label>
-                <select id="moneda" name="moneda" class="form-control select w-75">
-                    <option value="">Seleccione una opción</option>
-                    <option value="codorba">Córdoba</option>
-                    <option value="dolar">Dólar</option>
-                </select>
+            <!--Botón para agregar-->
+            <div class="row justify-content-center">
+                <div class="col-6 mt-2">
+                    <button type="submit" class="btn btn-primary w-100 m-2">
+                        <i class="bx bx-plus"></i> Agregar
+                    </button>
+                </div>
             </div>
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputprecio" class="w-25">Precio:</label>
-                <input type="number" id="precio" name="precio" class="form-control w-75" placeholder=0>
+        </form>
+    }
+    <div id="alertMessages">
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Error
             </div>
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputtotal" class="w-25">Venta Total:</label>
-                <input type="text" id="total" name="total" class="form-control w-75" placeholder="0" readonly>
-            </div>
-            <div class="form-group d-flex align-items-center mt-2">
-                <label for="inputfinal" class="w-25">Venta Final:</label>
-                <input type="text" id="final" name="final" class="form-control w-75" placeholder="0" readonly>
-            </div>
-        </div>
+        }
     </div>
-
-    <!--Botón de búsqueda-->
+    <div id="successMessages">
+        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+    </div>
+    <!-- Agrega este botón al final de tu vista Search.cshtml -->
     <div class="row justify-content-center">
         <div class="col-6 mt-2">
-            <button type="submit" class="btn btn-primary w-100 m-4">
-                <i class="bx bx-plus"></i> Agregar
-            </button>
+            <a href="@Url.Action("Sale")" class="btn btn-secondary w-100 m-2">
+                <i class="bx bx-refresh"></i> Recargar
+            </a>
         </div>
     </div>
     <!--Tabla se resultados-->
@@ -98,7 +133,7 @@
                                 <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Producto">@venta.Producto</td>
                                 <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Cantidad">@venta.Cantidad</td>
                                 <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Tipo">@venta.TipoMoneda</td>
-                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Monto">@venta.Monto</td>
+                                <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Monto">@venta.Precio</td>
                                 <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Total">@venta.Total</td>
                                 <td onclick="activarEdicion(this)" data-id="@venta.Id" data-columna="Final">@venta.Final</td>
                             </tr>
@@ -124,5 +159,200 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    var obtenerPrecioDeProductoUrl = '@Url.Action("ObtenerPrecioDeProducto", "Home")';
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Función para calcular el total y actualizar la venta final
+        function calcularTotal() {
+            var cantidad = parseFloat(document.getElementById('cantidad').value) || 0;
+            var precio = parseFloat(document.getElementById('precio').value) || 0;
+            var tipoMoneda = document.getElementById('tipoMoneda').value;
+            var ventaFinal = 0;
 
+            // Obtener la tasa de cambio (puedes ajustar este valor según tu tasa de cambio)
+            var tasaDeCambio = 36;
 
+            // Si el tipo de moneda es dólar, convierte el precio y el total a dólares
+            if (tipoMoneda === 'Dolar') {
+                precio = precio / tasaDeCambio;
+                ventaFinal = cantidad * precio;
+            } else {
+                ventaFinal = cantidad * precio;
+            }
+
+            document.getElementById('total').value = ventaFinal.toFixed(2);
+            document.getElementById('final').value = ventaFinal.toFixed(2);
+
+            // Actualizar visualmente el campo de precio
+            document.getElementById('precio').value = precio.toFixed(2);
+        }
+
+        // Agrega eventos de escucha a los campos de cantidad, precio y tipo de moneda
+        document.getElementById('cantidad').addEventListener('input', function () {
+            calcularTotal();
+        });
+
+        document.getElementById('precio').addEventListener('input', function () {
+            calcularTotal();
+        });
+
+        document.getElementById('tipoMoneda').addEventListener('change', function () {
+            calcularTotal();
+        });
+
+        // También, puedes calcular el total al cargar la página si hay valores preexistentes
+        calcularTotal();
+
+        // Agregar evento al cambio del producto para obtener y mostrar el precio automáticamente
+        document.getElementById('inputproducto').addEventListener('change', function () {
+            var selectedProducto = this.value;
+
+            // Verificar que se haya seleccionado un producto
+            if (selectedProducto) {
+                // Llamar a la función para obtener el precio del producto
+                obtenerPrecioProducto(selectedProducto, function (precio) {
+                    // Verificar que se haya obtenido un precio válido
+                    if (precio !== null && !isNaN(precio)) {
+                        // Actualizar el campo de precio con el valor obtenido
+                        document.getElementById('precio').value = precio.toFixed(2);
+                        // Recalcular el total y la venta final
+                        calcularTotal();
+                    } else {
+                        // Manejar el caso en que no se pudo obtener el precio
+                        alert('No se pudo obtener el precio del producto.');
+                    }
+                });
+            }
+        });
+
+        // Función para obtener el precio del producto
+        function obtenerPrecioProducto(descripcion, callback) {
+            $.ajax({
+                url: obtenerPrecioDeProductoUrl,
+                type: 'GET',
+                data: { name: descripcion },
+                success: function (result) {
+                    if (result.error) {
+                        console.error(result.error);
+                        callback(null);
+                    } else {
+                        callback(result.precio);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    callback(null);
+                }
+            });
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelector('form').addEventListener('submit', function (event) {
+            // Validar cada campo
+            if (!validarCampo('cliente')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('fecha')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('precio')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('cantidad')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('total')) {
+                event.preventDefault();
+                return;
+            }
+
+            if (!validarCampo('final')) {
+                event.preventDefault();
+                return;
+            }
+        });
+
+        // Función para validar un campo específico
+        function validarCampo(idCampo) {
+            var valorCampo = document.getElementById(idCampo).value.trim();
+
+            if (valorCampo === '') {
+                alert('Por favor, ingrese todos los valores');
+                return false;
+            }
+
+            return true;
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Función para validar el formulario antes de enviarlo
+        function validarFormulario() {
+            var productoSeleccionado = document.getElementById('Producto').value;
+
+            if (productoSeleccionado === 'Selecciona un producto') {
+                alert('Por favor, selecciona un producto.');
+                return false; // Evitar que el formulario se envíe
+            }
+
+            // Continuar con el envío del formulario
+            return true;
+        }
+
+        // Agrega un evento de escucha al formulario para llamar a la función validarFormulario antes del envío
+        document.getElementById('formularioVenta').addEventListener('submit', function () {
+            return validarFormulario();
+        });
+    });
+</script>
+
+<script>
+    // Agregar un evento al cargar el documento
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtener el elemento del campo de cantidad
+        var cantidadInput = document.getElementById("cantidad");
+
+        // Agregar un evento de validación al perder el foco (blur)
+        cantidadInput.addEventListener("blur", function () {
+            // Obtener el valor del campo de cantidad y convertirlo a un número
+            var cantidadValue = parseFloat(cantidadInput.value);
+
+            // Validar si el valor es negativo
+            if (cantidadValue < 0) {
+                // Mostrar un mensaje de error
+                alert("La cantidad no puede ser negativa. Por favor, ingrese un valor no negativo.");
+                // Establecer el valor en cero
+                cantidadInput.value = 0;
+            }
+        });
+
+    });
+    // Función para validar el campo de precio
+    function validatePrecio(input) {
+        // Obtener el valor del campo de precio y convertirlo a un número
+        var precioValue = parseFloat(input.value);
+
+        // Validar si el valor es negativo
+        if (precioValue < 0) {
+            // Mostrar un mensaje de error
+            alert("El precio no puede ser negativo. Por favor, ingrese un valor no negativo.");
+            // Establecer el valor en cero
+            input.value = "0.00";
+        }
+    }
+</script>
